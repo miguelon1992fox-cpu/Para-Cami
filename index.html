@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Para Cami ❤️</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+
+<style>
+body{
+margin:0;
+font-family:'Poppins', sans-serif;
+background:linear-gradient(135deg,#1a001a,#330033,#660066);
+min-height:100vh;
+overflow-x:hidden;
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+color:white;
+text-align:center;
+}
+
+/* Fondo estrellas */
+.stars{
+position:absolute;
+width:100%;
+height:100%;
+background:url('https://www.transparenttextures.com/patterns/stardust.png');
+animation:moveStars 60s linear infinite;
+opacity:0.4;
+z-index:-1;
+}
+@keyframes moveStars{
+from{background-position:0 0;}
+to{background-position:10000px 5000px;}
+}
+
+/* PLAYER */
+.player{
+position:fixed;
+top:15px;
+background:rgba(0,0,0,0.4);
+backdrop-filter:blur(12px);
+padding:15px 25px;
+border-radius:25px;
+box-shadow:0 0 30px pink;
+font-size:14px;
+width:280px;
+z-index: 20;
+}
+.progress{
+width:100%;
+height:6px;
+background:#555;
+border-radius:5px;
+margin:6px 0;
+cursor:pointer;
+}
+.progress-bar{
+height:100%;
+width:0%;
+background:linear-gradient(90deg,pink,#ff66cc);
+border-radius:5px;
+}
+.time{
+display:flex;
+justify-content:space-between;
+font-size:12px;
+opacity:0.8;
+}
+.player button{
+margin-top:8px;
+background:pink;
+border:none;
+padding:6px 14px;
+border-radius:10px;
+cursor:pointer;
+font-weight:bold;
+}
+
+/* Corazón */
+.heart-container{
+cursor:pointer;
+animation:beat 1.2s infinite;
+margin-top:40px;
+}
+.heart-svg{
+width:140px;
+filter:drop-shadow(0 0 20px red);
+}
+@keyframes beat{
+0%,100%{transform:scale(1);}
+50%{transform:scale(1.15);}
+}
+
+/* Botón futuro */
+.reveal-btn{
+display:none;
+margin-top:30px;
+background:white;
+color:#660066;
+padding:12px 25px;
+border-radius:30px;
+font-weight:bold;
+cursor:pointer;
+}
+
+/* Polaroid */
+.polaroid{
+position:absolute;
+top:50%;
+left:50%;
+transform:translate(-50%, -200%) rotate(-8deg);
+opacity:0;
+background:linear-gradient(145deg,#fce4ec,#f8bbd0,#f48fb1);
+padding:12px;
+border:8px solid #fff0f5;
+box-shadow:0 20px 40px rgba(0,0,0,0.5),
+inset 0 0 20px rgba(255,255,255,0.6);
+transition:all 1.5s ease;
+z-index:5;
+border-radius:8px;
+}
+.polaroid img{
+width:200px;
+max-width:70vw;
+display:block;
+}
+.polaroid span{
+display:block;
+margin-top:8px;
+color:#333;
+font-weight:bold;
+}
+.show-polaroid{
+transform:translate(-50%, -40%) rotate(-8deg);
+opacity:1;
+animation:swing 3s ease-in-out infinite;
+}
+@keyframes swing{
+0%,100%{transform:translate(-50%, -40%) rotate(-8deg);}
+50%{transform:translate(-50%, -40%) rotate(4deg);}
+}
+
+/* Contador */
+.bottom-counter{
+position:absolute;
+bottom:40px;
+font-size:18px;
+opacity:0;
+transition:opacity 2s ease;
+}
+.show-counter{opacity:1;}
+
+/* Corazones flotando */
+.floating-heart{
+position:absolute;
+color:pink;
+font-size:20px;
+animation:floatUp 4s linear forwards;
+}
+@keyframes floatUp{
+0%{transform:translateY(0);opacity:1;}
+100%{transform:translateY(-300px);opacity:0;}
+}
+
+/* Burbuja */
+.love-bubble{
+position:absolute;
+background:rgba(255,255,255,0.15);
+backdrop-filter:blur(10px);
+padding:12px 20px;
+border-radius:25px;
+font-size:16px;
+white-space:nowrap;
+animation:popFloat 2.5s ease forwards;
+box-shadow:0 0 15px rgba(255,105,180,0.6);
+}
+@keyframes popFloat{
+0%{opacity:0;transform:translateY(10px) scale(0.8);}
+20%{opacity:1;}
+100%{opacity:0;transform:translateY(-40px) scale(0.95);}
+}
+
+/* Carta */
+.letter-btn{
+display:none;
+margin-top:20px;
+background:linear-gradient(45deg,#ff99cc,#ff66cc);
+color:white;
+padding:12px 28px;
+border-radius:30px;
+font-weight:bold;
+cursor:pointer;
+box-shadow:0 0 15px pink;
+z-index:15;
+}
+.letter-modal{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.7);
+display:flex;
+align-items:center;
+justify-content:center;
+opacity:0;
+pointer-events:none;
+transition:0.5s;
+z-index:30;
+}
+.letter-modal.show{
+opacity:1;
+pointer-events:auto;
+}
+.letter-content{
+background:#fff0f5;
+color:#660033;
+padding:40px;
+border-radius:15px;
+max-width:500px;
+width:90%;
+box-shadow:0 0 40px pink;
+text-align:left;
+line-height: 1.6;
+}
+
+/* Final */
+.final-message{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:radial-gradient(circle,#1a001a,#000);
+color:white;
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+font-size:28px;
+opacity:0;
+pointer-events:none;
+transition:1.5s;
+z-index:40;
+}
+.final-message.show{
+opacity:1;
+pointer-events:auto;
+}
+</style>
+</head>
+
+<body>
+
+<div class="stars"></div>
+
+<div class="player">
+<div>Tatu — María Becerra 🎵</div>
+<div class="progress" onclick="seek(event)">
+<div class="progress-bar" id="progressBar"></div>
+</div>
+<div class="time">
+<span id="currentTime">0:00</span>
+<span id="duration">0:00</span>
+</div>
+<button onclick="togglePlay()">Play</button>
+</div>
+
+<div class="heart-container" onclick="startExperience()">
+<svg class="heart-svg" viewBox="0 0 32 29.6">
+<path fill="red" d="M23.6,0c-3.4,0-6.4,2.2-7.6,5.3C14.8,2.2,11.8,0,8.4,0
+C3.8,0,0,3.8,0,8.4c0,9.3,16,21.2,16,21.2s16-11.9,16-21.2C32,3.8,28.2,0,23.6,0z"/>
+</svg>
+</div>
+
+<div class="reveal-btn" id="revealBtn" onclick="showPolaroid()">
+Toca para ver nuestro futuro ❤️
+</div>
+
+<div class="polaroid" id="polaroid">
+<img src="foto.jpg">
+<span>Pronto estaremos juntos, mi vida ❤️</span>
+</div>
+
+<div class="bottom-counter" id="counter"></div>
+
+<div class="letter-btn" id="letterBtn" onclick="openLetter()">
+Leer carta 💌
+</div>
+
+<div class="letter-modal" id="letterModal">
+<div class="letter-content">
+<h2>Para ti, Cami ❤️</h2>
+<p>
+Mi amor, han pasado 2 años desde que empezamos esta aventura. Sé que a veces  nosotros mismos nos enredamos en pequeñas peleas por nuestra diferencia de edad, pero cada vez que te miro, confirmo que el corazón no sabe de números, solo de sentimientos.
+</p>
+<p>
+Gracias por demostrarme que nuestro amor es capaz de superar cualquier obstáculo y cualquier discusión. Eres mi refugio y mi mayor alegría.
+</p>
+<button onclick="closeLetter()" style="background:#ff66cc; color:white; border:none; padding:10px; border-radius:10px; cursor:pointer;">Cerrar 💕</button>
+<button onclick="showFinalMessage()" style="background:#660066; color:white; border:none; padding:10px; border-radius:10px; cursor:pointer; margin-left:10px;">Mensaje final ✨</button>
+</div>
+</div>
+
+<div class="final-message" id="finalMessage">
+✨ Nuestro amor es infinito ✨<br><br>
+Te elegiría en esta vida y en todas ❤️
+<br><br>
+<button onclick="location.reload()" style="background:white; color:#660066; border:none; padding:10px 20px; border-radius:20px; cursor:pointer; font-size:18px;">Volver a empezar 💖</button>
+</div>
+
+<audio id="music" src="music.mp3"></audio>
+
+<script>
+const phrases=[
+"Te amo infinito 🐢❤️",
+"Eres mi motor 💕",
+"Te quiero para siempre 🏡",
+"Eres mi regalo 💝",
+"Sueño con tus ojitos 👶",
+"Eres mi primer pensamiento 🥰",
+"Mi esposa y amiga 💍",
+"Soy completamente tuyo 💕"
+];
+
+let phraseIndex=0;
+const revealBtn=document.getElementById("revealBtn");
+const polaroid=document.getElementById("polaroid");
+const music=document.getElementById("music");
+const progressBar=document.getElementById("progressBar");
+const letterBtn=document.getElementById("letterBtn");
+
+function startExperience(){
+music.play();
+if(phraseIndex < phrases.length){
+createBubble(phrases[phraseIndex]);
+phraseIndex++;
+}else{
+document.querySelector(".heart-container").style.display="none";
+revealBtn.style.display="inline-block";
+}
+}
+
+function createBubble(text){
+const bubble=document.createElement("div");
+bubble.className="love-bubble";
+bubble.innerHTML=text;
+const heart=document.querySelector(".heart-container");
+const rect=heart.getBoundingClientRect();
+const centerX=rect.left+rect.width/2-80;
+const centerY=rect.top+rect.height/2-20;
+const directions=[
+{ x: 0, y: -80 },
+{ x: 70, y: -60 },
+{ x: -70, y: -60 },
+{ x: 90, y: 0 },
+{ x: -90, y: 0 },
+{ x: 0, y: 70 }
+];
+const randomDir=directions[Math.floor(Math.random()*directions.length)];
+bubble.style.left=(centerX+randomDir.x)+"px";
+bubble.style.top=(centerY+randomDir.y)+"px";
+document.body.appendChild(bubble);
+setTimeout(()=>bubble.remove(),2500);
+}
+
+function togglePlay(){
+const btn=document.querySelector(".player button");
+if(music.paused){music.play();btn.textContent="Pause";}
+else{music.pause();btn.textContent="Play";}
+}
+
+function formatTime(seconds){
+const minutes=Math.floor(seconds/60);
+const secs=Math.floor(seconds%60);
+return minutes+":"+(secs<10?"0"+secs:secs);
+}
+
+music.addEventListener("loadedmetadata",()=>{
+document.getElementById("duration").textContent=formatTime(music.duration);
+});
+
+music.addEventListener("timeupdate",()=>{
+if(music.duration){
+progressBar.style.width=(music.currentTime/music.duration)*100+"%";
+document.getElementById("currentTime").textContent=formatTime(music.currentTime);
+}
+});
+
+function seek(e){
+const width=e.currentTarget.clientWidth;
+const clickX=e.offsetX;
+music.currentTime=(clickX/width)*music.duration;
+}
+
+function showPolaroid(){
+revealBtn.style.display="none";
+polaroid.classList.add("show-polaroid");
+document.getElementById("counter").classList.add("show-counter");
+startHearts();
+setTimeout(()=>{letterBtn.style.display="inline-block";},1500);
+}
+
+function startHearts(){
+for(let k=0;k<20;k++){
+setTimeout(()=>{
+const heart=document.createElement("div");
+heart.className="floating-heart";
+heart.innerHTML="❤️";
+heart.style.left=Math.random()*100+"vw";
+heart.style.bottom="0px";
+heart.style.fontSize=(20+Math.random()*20)+"px";
+document.body.appendChild(heart);
+setTimeout(()=>heart.remove(),4000);
+},k*200);
+}
+}
+
+function updateCounter(){
+// Cambiado para mostrar el mensaje de 2 años y San Valentín
+document.getElementById("counter").innerHTML=
+"❤️ Feliz San Valentín ❤️<br>¡Ya son 2 años juntos! 💍";
+}
+updateCounter();
+
+function openLetter(){
+document.getElementById("letterModal").classList.add("show");
+}
+function closeLetter(){
+document.getElementById("letterModal").classList.remove("show");
+}
+function showFinalMessage(){
+document.getElementById("finalMessage").classList.add("show");
+}
+</script>
+
+</body>
+</html>
